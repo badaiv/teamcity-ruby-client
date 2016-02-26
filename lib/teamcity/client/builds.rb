@@ -53,6 +53,25 @@ module TeamCity
         response == 'true'
       end
 
+      # Get build changes
+      #
+      # @param id [String] build to get list of changes
+      # @return [Array<Hashie::Mash>] of changes (empty array if no builds exist)
+      def build_changes(id)
+        response = get("changes/?locator=build:(id:#{id})")
+        response.change
+      end
+
+      # Get build related issues
+      #
+      # @param id [String] build to get list of related issues
+      # @return [Array<Hashie::Mash>] of related issues (empty array if no builds exist)
+      def build_issues(id)
+        response = get("builds/id:#{id}/relatedIssues")
+        # response.issueUsage
+        response.issueUsage.map{ |i| i.issue}
+      end
+
       # Get build artifacts
       #
       # @param build_id [String]
