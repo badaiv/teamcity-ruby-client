@@ -15,6 +15,18 @@ module TeamCity
         response.build
       end
 
+      # List of builds with sinceBuild locator
+      # looks like sinceBuild:(number: xxx) doesn't work!!!
+      #
+      # @param options [Hash] list of build locators to filter build results on
+      # @param sinceBuild_options [Hash] list of build locators to filter build results on
+      # @return [Array<Hashie::Mash>] of builds (empty array if no builds exist)
+      def builds_since(options={}, since_build_options={})
+        url_params = options.empty? ? '' : "?locator=#{locator(options)},sinceBuild:(#{locator(since_build_options)})"
+        response = get("builds#{url_params}")
+        response.build
+      end
+
       # Get build details
       #
       # @param options [Hash] option keys, :id => build_id
