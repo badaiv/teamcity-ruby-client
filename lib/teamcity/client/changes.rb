@@ -12,16 +12,25 @@ module TeamCity
       def changes(options={})
         url_params = options.empty? ? '' : "?locator=#{locator(options)}"
         response = get("changes#{url_params}")
-        response.build
+        response.change
       end
 
       # Get change details
       #
       # @param options [Hash] option keys, :id => change_id
-      # @return [Hashie::Mash] of build details
+      # @return [Hashie::Mash] of change details
       def change(options={})
         assert_options(options)
         get("changes/#{locator(options)}")
+      end
+
+      # Get change issues
+      #
+      # @param options [Hash] option keys, :id => change_id
+      # @return [Hashie::Mash] of change issues
+      def change_issues(options={})
+        assert_options(options)
+        get("changes/#{locator(options)}/issues")
       end
 
     end
